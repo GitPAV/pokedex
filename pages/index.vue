@@ -1,17 +1,44 @@
 <template>
   <div class="container flex-center">
+
     <Navbar />
+
     <div id="List-container">
       <h1 class="title">Pokédex</h1>
 
-      <p v-if="$fetchState.pending">Fetching pokemons...</p>
-      <p v-else-if="$fetchState.error">The pokemon run away !(An error occurred) :(</p>
-      <div class="pokemon-list flex-center" v-else>
-          <div class="pokemon-item flex-center" v-for="(post, index) of pokemonList.results" :key="post.name">
-            <p>{{ pokemonList.length }}</p>
-            <img :src="require('assets/official-artwork/' + (index + 1) + '.png')" alt="">
-            <p>{{ post.name }}</p>
+      <input @input="filterList()" type="text" v-model="search" placeholder="Search title.."/>
+      <button @click="resetSearch()">Reset search</button>
+
+      <!-- Filtered list -->
+      <div v-if="filteredList.length > 0 && search.length > 0">
+        <div class="pokemon-list flex-center">
+          <div 
+            class="pokemon-item flex-center" 
+            v-for="pokemon of filteredList" :key="pokemon.name"
+          >
+            <nuxt-link :to="{ path: 'pokemon_detail/' + pokemon.name }">
+              <img :src="require('assets/official-artwork/' + pokemonIdFromURL(pokemon.url) + '.png')" alt="" loading="lazy">
+              <p>{{ pokemon.name }}</p>
+            </nuxt-link>
           </div>
+        </div>
+      </div>
+
+      <!-- Full list -->
+      <div v-if="filteredList.length == 0 && search.length == 0">
+        <p v-if="$fetchState.pending">Fetching pokemons...</p>
+        <p v-else-if="$fetchState.error">The pokemon run away !(An error occurred) :(</p>
+        <div v-else class="pokemon-list flex-center">
+            <div 
+              class="pokemon-item flex-center" 
+              v-for="(pokemon, index) of pokemonList.results" :key="pokemon.name"
+            >
+              <nuxt-link :to="{ path: 'pokemon_detail/' + pokemon.name }">
+                <img :src="require('assets/official-artwork/' + (index + 1) + '.png')" alt="" loading="lazy">
+                <p>{{ pokemon.name }}</p>
+              </nuxt-link>
+            </div>
+        </div>
       </div>
 
     </div>
@@ -21,21 +48,57 @@
 <script lang="ts">
 import Vue from 'vue'
 
+import { Pokemons } from '../static/pokemons_interface'
+
 export default Vue.extend({
   data() {
     return {
-      pokemonList: Array,
+      search: '',
+      pokemonList: {} as Pokemons,
+      filteredList: [] as any
     }
   },
+
   methods: {
+    filterList() {
+
+      console.log('search :', this.search)
+
+      this.filteredList = this.pokemonList.results.filter((pokemon) => {
+        return pokemon.name.toLowerCase().includes(this.search.toLowerCase())
+      })
+
+      // Prevent filteredList to be full but not displayed
+      if(this.search.length == 0) this.filteredList = []
+
+      console.log('filtered list:', this.filteredList.length)
+    },
+
+    resetSearch() {
+      this.filteredList = []
+      this.search = ''
+    },
+
+    pokemonIdFromURL(url:string) {
+      let result = url.split('/')
+
+      // console.log(result[result.length - 2])
+
+      return result[result.length - 2]
+    }
   },
 
-  // Pokemon api call
+  computed: {
+  },
+
+  // Pokemon list api call
   async fetch() {
     this.pokemonList = await fetch(
       'https://pokeapi.co/api/v2/pokemon?limit=151'
     ).then(res => res.json())
     console.log(this.pokemonList)
+
+    // this.pokemonList = this.pokemonList.results
   }
 
 })
@@ -56,7 +119,7 @@ export default Vue.extend({
 }
 
 #List-container {
-  margin-top: 100px;
+  margin-top: 2.5em;
   width: 100%;
 }
 
