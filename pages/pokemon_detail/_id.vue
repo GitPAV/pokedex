@@ -42,7 +42,7 @@
                 </div>
 
                 <!-- Add pokemon to team  -->
-                <button class="add-pokemon">
+                <button class="add-pokemon reset-focus-style" @click="addPokemon(pokemon.id)">
                     Add to my team
                 </button>
 
@@ -68,6 +68,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapMutations } from 'vuex'
 
 export default Vue.extend({
     data() {
@@ -80,6 +81,11 @@ export default Vue.extend({
         firstCapitalLetter(name:string) {
             let changedName = name.charAt(0).toUpperCase() + name.slice(1)
             return changedName
+        },
+
+        addPokemon(id:number) {
+            // console.log('this.$store.state:', this.$store.state)
+            this.$store.commit('add', id)
         }
     },
 

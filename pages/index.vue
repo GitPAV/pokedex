@@ -7,7 +7,7 @@
       <h1 class="title">Pokédex: <span class="italic">1st Gen</span></h1>
 
       <!-- Search & reset -->
-      <div class="search-reset flex-center">
+      <div class="search-reset reset-focus-style flex-center">
         <input @input="filterList()" type="text" v-model="search" placeholder="Search pokemon.."/>
         <button v-if="search.length > 0" @click="resetSearch()">
           <img src="../assets/x-icon.svg" alt="reset button">
@@ -111,6 +111,11 @@ export default Vue.extend({
     font-style: italic;
 }
 
+.reset-focus-style:active, .reset-focus-style:focus {
+  border: none;
+  outline: none;
+}
+
 /* Regular class & id, sorted by top to bottom */
 .container {
   flex-direction: column;
@@ -136,11 +141,6 @@ export default Vue.extend({
 
 .search-reset button:hover {
   cursor: pointer;
-}
-
-.search-reset button:active, .search-reset button:focus {
-  border: none;
-  outline: none;
 }
 
 .search-reset img {

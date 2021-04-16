@@ -3,7 +3,15 @@
     <nuxt-link to="/">
       <img src="../assets/pokeball.png" alt="pokeball home icon">
     </nuxt-link>
-    <p>Je suis une navbar</p>
+
+    <div class="pokemon-team">
+      <div class="team-member" v-for="(pokemon, index) of this.$store.state.list" :key="index">
+        <img 
+          :src="require('../assets/official-artwork/' + pokemon + '.png')" 
+          alt="illustration of pokemon in the team"
+        >
+      </div>
+    </div>
   </div>
 </template>
 
@@ -28,5 +36,22 @@
 
 .navbar a img {
   height: 2.2em;
+}
+
+.pokemon-team {
+  display: flex;
+  margin-right: 1em;
+}
+
+.team-member {
+  margin: 0em .35em;
+}
+
+.team-member img{
+  width: 2.5em;
+  height: 2.5em;
+  border: 1px solid #ff8100;
+  border-radius: 20px;
+  padding: .2em;
 }
 </style>
