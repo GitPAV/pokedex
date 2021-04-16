@@ -4,11 +4,15 @@
     <Navbar />
 
     <div id="List-container">
-      <h1 class="title">Pokédex</h1>
+      <h1 class="title">Pokédex: <span class="italic">1st Gen</span></h1>
 
       <!-- Search & reset -->
-      <input @input="filterList()" type="text" v-model="search" placeholder="Search title.."/>
-      <button @click="resetSearch()">Reset search</button>
+      <div class="search-reset flex-center">
+        <input @input="filterList()" type="text" v-model="search" placeholder="Search pokemon.."/>
+        <button v-if="search.length > 0" @click="resetSearch()">
+          <img src="../assets/x-icon.svg" alt="reset button">
+        </button>
+      </div>
 
       <!-- Filtered list -->
       <div v-if="filteredList.length > 0 && search.length > 0">
@@ -103,6 +107,10 @@ export default Vue.extend({
   align-items: center;
 }
 
+.italic {
+    font-style: italic;
+}
+
 /* Regular class & id, sorted by top to bottom */
 .container {
   flex-direction: column;
@@ -110,8 +118,33 @@ export default Vue.extend({
 }
 
 #List-container {
-  margin-top: 2.5em;
+  margin-top: 3.7em;
   width: 100%;
+}
+
+.search-reset {
+  margin-top: .5em;
+  margin-bottom: .5em;
+}
+
+.search-reset button {
+  border: none;
+  background-color: white;
+  display: flex;
+  align-items: center;
+}
+
+.search-reset button:hover {
+  cursor: pointer;
+}
+
+.search-reset button:active, .search-reset button:focus {
+  border: none;
+  outline: none;
+}
+
+.search-reset img {
+  width: 1em;
 }
 
 .pokemon-list {
@@ -127,8 +160,21 @@ export default Vue.extend({
   margin: 15px 0 15px 0;
 }
 
+.pokemon-item a {
+  color: black;
+  text-decoration: unset;
+}
+
+.pokemon-item a:hover {
+  color: #456982;
+}
+
 .pokemon-item img {
   width: 75%;
+}
+
+.pokemon-item img:hover {
+  transform: scale(.92);
 }
 
 .pokemon-item p {

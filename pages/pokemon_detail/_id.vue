@@ -40,7 +40,12 @@
 
                     </div>
                 </div>
-                
+
+                <!-- Add pokemon to team  -->
+                <button class="add-pokemon">
+                    Add to my team
+                </button>
+
                 <!-- Moves -->
                 <div class="pokemon-moves">
                     <h3>{{firstCapitalLetter(pokemon.name)}}'s moves :</h3>
@@ -94,20 +99,8 @@ export default Vue.extend({
 </script>
 
 <style>
-/* Utilities class */
-.flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.italic {
-    font-style: italic;
-}
-
-/* Regular class & id, sorted by top to bottom */
 #Pokemon-detail {
-    margin-top: 2.5em;
+    margin-top: 3.7em;
 }
 
 .pokemon-container {
@@ -153,6 +146,19 @@ export default Vue.extend({
     border: 1px solid grey;
     border-radius: 20px;
     padding: .5em;
+}
+
+.add-pokemon {
+    background-color: green;
+    border: 1px solid green;
+    border-radius: 20px;
+    padding: .7em;
+    color: white;
+}
+
+.add-pokemon:hover {
+    background-color: rgb(0, 158, 0);
+    border: 1px solid black;
 }
 
 .pokemon-moves {
