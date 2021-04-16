@@ -8,37 +8,45 @@
         <p v-else-if="$fetchState.error">The pokemon run away !(An error occurred) :(</p>
         <div v-else class="pokemon-container flex-center" >
 
-        <h1 class="title">{{firstCapitalLetter(pokemon.name)}} #{{pokemon.id}}</h1>
-        <div class="pokemon-type flex-center" >
-            <p class="italic" v-for="(types, index) of pokemon.types" :key="index">{{types.type.name}}</p>
-        </div>
+            <!-- Header : name & title -->
+            <h1 class="title">{{firstCapitalLetter(pokemon.name)}} #{{pokemon.id}}</h1>
+            <div class="pokemon-type flex-center" >
+                <p class="italic" v-for="(types, index) of pokemon.types" :key="index">{{types.type.name}}</p>
+            </div>
 
-            <div class="pokemon-item flex-center">
-                <!-- <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" alt=""> -->
-                <img :src="pokemon.sprites.other['official-artwork'].front_default" alt="">
-                
-                <div class="pokemon-mesures">
-                    <p class="height">Height : {{pokemon.height}} decimetres</p>
-                    <p class="weight">Weight : {{pokemon.weight}} hectograms</p>
-                </div>
+            <!-- Pokemon main infos -->
+            <div class="pokemon-entity flex-center">
+                <div class="pokemon-main flex-center">
+                    <img :src="require('../../assets/official-artwork/' + pokemon.id + '.png')" alt="pokemon official illustration">
 
-                <div class="pokemon-stats-container flex-center">
-                    <h3>{{firstCapitalLetter(pokemon.name)}}'s stats :</h3>
-                    <div class="pokemon-stats">
-                        <p 
-                            v-for="(stats, index) of pokemon.stats" 
-                            :key="index">
-                            <span class="italic">{{firstCapitalLetter(stats.stat.name)}}</span> : {{stats.base_stat}}
-                            <span class="italic">|  EV: {{stats.effort}}</span>
-                        </p>
+                    <div class="pokemon-main-info flex-center">
+                        
+                        <div class="pokemon-stats-container flex-center">
+                            <h3>{{firstCapitalLetter(pokemon.name)}}'s stats :</h3>
+                            <div class="pokemon-stats">
+                                <p 
+                                    v-for="(stats, index) of pokemon.stats" 
+                                    :key="index">
+                                    <span class="italic">{{firstCapitalLetter(stats.stat.name)}}</span> : {{stats.base_stat}}
+                                    <span class="italic">|  EV: {{stats.effort}}</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pokemon-mesures">
+                            <p class="height">Height : {{pokemon.height}} decimetres</p>
+                            <p class="weight">Weight : {{pokemon.weight}} hectograms</p>
+                        </div>
+
                     </div>
                 </div>
-
+                
+                <!-- Moves -->
                 <div class="pokemon-moves">
                     <h3>{{firstCapitalLetter(pokemon.name)}}'s moves :</h3>
                     <ul>
                         <li
-                            class="flex-center"
+                            
                             v-for="(moves, index) of pokemon.moves" 
                             :key="index"                    
                         >
@@ -46,6 +54,7 @@
                         </li>
                     </ul>
                 </div>
+
             </div>
         </div>
     </div>
@@ -69,9 +78,6 @@ export default Vue.extend({
         }
     },
 
-    computed: {
-    },
-
     created(){
         console.log("your id is: " + this.$route.params.id);
     },
@@ -81,7 +87,6 @@ export default Vue.extend({
         this.pokemon = await fetch(
             'https://pokeapi.co/api/v2/pokemon/' + this.$route.params.id
         ).then(res => res.json())
-
         console.log(this.pokemon)
     }
 
@@ -113,19 +118,24 @@ export default Vue.extend({
     margin: 0 .25em;
 }
 
-.pokemon-item {
+.pokemon-entity {
     flex-direction: column;
+    width: auto;
 }
 
-.pokemon-item img {
+.pokemon-entity img {
     width: 60%;
+}
+
+.pokemon-main-info {
+    flex-direction: column;
 }
 
 .pokemon-mesures {
     display: flex;
     justify-content: space-between;
-    width: 75%;
-    margin: 1em 0em;
+    flex-direction: column;
+    margin: 3em 0em;
 }
 
 .pokemon-stats-container {
@@ -159,8 +169,12 @@ export default Vue.extend({
 
 .pokemon-moves ul {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: .5em;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 0.5em 1.3em;
     padding-left: 0px;
+}
+
+.pokemon-moves li {
+    list-style: circle;
 }
 </style>

@@ -6,6 +6,7 @@
     <div id="List-container">
       <h1 class="title">Pokédex</h1>
 
+      <!-- Search & reset -->
       <input @input="filterList()" type="text" v-model="search" placeholder="Search title.."/>
       <button @click="resetSearch()">Reset search</button>
 
@@ -17,7 +18,10 @@
             v-for="pokemon of filteredList" :key="pokemon.name"
           >
             <nuxt-link :to="{ path: 'pokemon_detail/' + pokemon.name }">
-              <img :src="require('assets/official-artwork/' + pokemonIdFromURL(pokemon.url) + '.png')" alt="" loading="lazy">
+              <img 
+                :src="require('assets/official-artwork/' + pokemonIdFromURL(pokemon.url) + '.png')" 
+                alt="pokemon official illustration" loading="lazy"
+              >
               <p>{{ pokemon.name }}</p>
             </nuxt-link>
           </div>
@@ -61,17 +65,12 @@ export default Vue.extend({
 
   methods: {
     filterList() {
-
-      console.log('search :', this.search)
-
       this.filteredList = this.pokemonList.results.filter((pokemon) => {
         return pokemon.name.toLowerCase().includes(this.search.toLowerCase())
       })
 
       // Prevent filteredList to be full but not displayed
       if(this.search.length == 0) this.filteredList = []
-
-      console.log('filtered list:', this.filteredList.length)
     },
 
     resetSearch() {
@@ -81,14 +80,8 @@ export default Vue.extend({
 
     pokemonIdFromURL(url:string) {
       let result = url.split('/')
-
-      // console.log(result[result.length - 2])
-
       return result[result.length - 2]
     }
-  },
-
-  computed: {
   },
 
   // Pokemon list api call
@@ -97,8 +90,6 @@ export default Vue.extend({
       'https://pokeapi.co/api/v2/pokemon?limit=151'
     ).then(res => res.json())
     console.log(this.pokemonList)
-
-    // this.pokemonList = this.pokemonList.results
   }
 
 })
@@ -144,8 +135,4 @@ export default Vue.extend({
   font-size: 1.6em;
   font-style: italic;
 }
-
-/* .pokemon-item img:hover {
-  transform: scale(.95);
-} */
 </style>
