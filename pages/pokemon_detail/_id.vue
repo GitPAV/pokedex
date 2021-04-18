@@ -42,8 +42,11 @@
                 </div>
 
                 <!-- Add pokemon to team  -->
-                <button class="add-pokemon reset-focus-style" @click="addPokemon(pokemon.id)">
+                <button v-if="this.$store.state.list.length < 6" class="add-pokemon reset-focus-style" @click="addPokemon(pokemon.id)">
                     Add to my team
+                </button>
+                <button v-else class="full-team reset-focus-style">
+                    Your team is already full !
                 </button>
 
                 <!-- Moves -->
@@ -68,7 +71,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapMutations } from 'vuex'
 
 export default Vue.extend({
     data() {
@@ -84,7 +86,6 @@ export default Vue.extend({
         },
 
         addPokemon(id:number) {
-            // console.log('this.$store.state:', this.$store.state)
             this.$store.commit('add', id)
         }
     },
@@ -165,6 +166,14 @@ export default Vue.extend({
 .add-pokemon:hover {
     background-color: rgb(0, 158, 0);
     border: 1px solid black;
+}
+
+.full-team {
+    background-color: red;
+    border: 1px solid red;
+    border-radius: 20px;
+    padding: .7em;
+    color: white;
 }
 
 .pokemon-moves {
