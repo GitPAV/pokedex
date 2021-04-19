@@ -88,7 +88,7 @@ export default Vue.extend({
             this.$store.commit('add', id);
         }
     },
-    
+
     // Pokemon api call
     async fetch() {
         this.pokemon = await fetch(
@@ -191,5 +191,23 @@ export default Vue.extend({
 .pokemon-moves li {
     list-style: circle;
     text-align: left;
+}
+
+@media screen and (max-width: 480px) {
+    .pokemon-main {
+        flex-direction: column;
+    }
+
+    .pokemon-mesures {
+        margin: 2em 0em;
+    }
+
+    .pokemon-moves ul {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pokemon-moves li {
+        font-size: .9em;
+    }
 }
 </style>

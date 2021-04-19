@@ -181,4 +181,19 @@ export default Vue.extend({
   font-size: 1.6em;
   font-style: italic;
 }
+
+/* Media querry */
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 1.5em;
+  }
+
+  .pokemon-item {
+    width: 40%;
+  }
+  
+  .pokemon-item p {
+    font-size: 1em;
+  }
+}
 </style>

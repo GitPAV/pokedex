@@ -152,4 +152,17 @@ export default Vue.extend({
   width: .9em;
   
 }
+/* Media querry */
+@media screen and (max-width: 480px) {
+  .team-member {
+    width: 2em;
+    max-width: 2em;
+    height: 2em;
+    max-height: 2em;
+  }
+  .team-member .pokemon-team-img{
+    width: 2em;
+    height: 2em;
+  }
+}
 </style>
