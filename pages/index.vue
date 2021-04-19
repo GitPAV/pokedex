@@ -7,9 +7,9 @@
       <h1 class="title">Pokédex: <span class="italic">1st Gen</span></h1>
 
       <!-- Search & reset -->
-      <div class="search-reset reset-focus-style flex-center">
-        <input @input="filterList()" type="text" v-model="search" placeholder="Search pokemon.."/>
-        <button v-if="search.length > 0" @click="resetSearch()">
+      <div class="search-reset flex-center">
+        <input @keyup="filterList()" type="text" v-model="search" placeholder="Search pokemon.."/>
+        <button v-if="search.length > 0" @click="resetSearch()" class="reset-focus-style">
           <img src="../assets/x-icon.svg" alt="reset button">
         </button>
       </div>
@@ -191,7 +191,7 @@ export default Vue.extend({
   .pokemon-item {
     width: 40%;
   }
-  
+
   .pokemon-item p {
     font-size: 1em;
   }
