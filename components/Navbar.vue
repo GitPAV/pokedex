@@ -67,19 +67,27 @@ export default Vue.extend({
 
       this.$store.commit('changeList', newlist);
     }
-  }
+  },
+
+  mounted() {
+    if (localStorage.list) {
+      let localStringToNumber:Array<any> = [];
+      let localStorageToArray:Array<number> = [];
+
+      localStringToNumber = localStorage.list.split(',');
+
+      for (let i = 0; i < localStringToNumber.length; i++) {
+        localStorageToArray.push(parseInt(localStringToNumber[i], 10));
+      }
+
+      this.$store.commit('changeList', localStorageToArray);
+    }
+  },
+  
 })
 </script>
 
 <style>
-.dropzone {
-  background-color: yellow;
-}
-
-.draggable {
-  background-color: violet;
-}
-
 .navbar {
   width: 100%;
   height: 3em;
