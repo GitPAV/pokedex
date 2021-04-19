@@ -4,18 +4,31 @@
       <img src="../assets/pokeball.png" alt="pokeball home icon">
     </nuxt-link>
 
-    <div class="pokemon-team">
-      <div class="team-member" v-for="(pokemon, index) of this.$store.state.list" :key="index">
-        <nuxt-link to="/">
-          <img 
-            :src="require('../assets/official-artwork/' + pokemon + '.png')" 
-            alt="illustration of pokemon in the team"
-            class="pokemon-team-img"
+    <div 
+      class="pokemon-team" 
+    >
+      <div 
+        class="dropzone"          
+        v-for="(pokemon, index) of this.$store.state.list" 
+        :key="index"
+        @drop='onDrop($event, index)' 
+        @dragover.prevent
+        @dragenter.prevent
+      >
+        <div 
+          class="team-member draggable" 
+          draggable
+          @dragstart='startDrag($event, pokemon, index)'
           >
-        </nuxt-link>
-        <button @click="removePokemon(index)" class="remove-pokemon reset-focus-style">
-          <img src="../assets/x-icon.svg" alt="">
-        </button>
+            <img 
+              :src="require('../assets/official-artwork/' + pokemon + '.png')" 
+              alt="illustration of pokemon in the team"
+              class="pokemon-team-img"
+            >
+          <button @click="removePokemon(index)" class="remove-pokemon reset-focus-style">
+            <img src="../assets/x-icon.svg" alt="">
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -29,14 +42,44 @@ export default Vue.extend({
   },
 
   methods: {
-    removePokemon(id:number) {
-      this.$store.commit('remove', id)
+    removePokemon(id:number):void {
+      this.$store.commit('remove', id);
+    },
+
+    startDrag(evt:any, pokemonId:number, pokemonIndex:number):void {
+      evt.dataTransfer.dropEffect = 'move';
+      evt.dataTransfer.effectAllowed = 'move';
+      evt.dataTransfer.setData('pokemonId', pokemonId);
+      evt.dataTransfer.setData('pokemonIndex', pokemonIndex);
+    },
+
+    onDrop(evt:any, indexDrop:any):void {
+      let newlist:Array<any> = [];
+      let savedPkm:number;
+
+      const pokemonId = evt.dataTransfer.getData('pokemonId');
+      const pokemonIndex = evt.dataTransfer.getData('pokemonIndex');
+
+      newlist = this.$store.state.list.slice();
+      savedPkm = newlist[indexDrop];
+      newlist[indexDrop] = parseInt(pokemonId, 10);
+      newlist[pokemonIndex] = savedPkm;
+
+      this.$store.commit('changeList', newlist);
     }
   }
 })
 </script>
 
 <style>
+.dropzone {
+  background-color: yellow;
+}
+
+.draggable {
+  background-color: violet;
+}
+
 .navbar {
   width: 100%;
   height: 3em;

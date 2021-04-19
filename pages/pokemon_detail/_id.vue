@@ -71,37 +71,30 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { PokemonDetails } from '../../static/pokemon_details'
 
 export default Vue.extend({
     data() {
         return {
-            pokemon: {},
+            pokemon: <PokemonDetails>{},
         }
     },
     
     methods: {
-        firstCapitalLetter(name:string) {
-            let changedName = name.charAt(0).toUpperCase() + name.slice(1)
-            return changedName
+        firstCapitalLetter(name:string):string {
+            return name.charAt(0).toUpperCase() + name.slice(1);
         },
-
-        addPokemon(id:number) {
-            this.$store.commit('add', id)
+        addPokemon(id:number):void {
+            this.$store.commit('add', id);
         }
     },
-
-    created(){
-        console.log("your id is: " + this.$route.params.id);
-    },
-
+    
     // Pokemon api call
     async fetch() {
         this.pokemon = await fetch(
             'https://pokeapi.co/api/v2/pokemon/' + this.$route.params.id
         ).then(res => res.json())
-        console.log(this.pokemon)
     }
-
 })
 </script>
 
@@ -197,5 +190,6 @@ export default Vue.extend({
 
 .pokemon-moves li {
     list-style: circle;
+    text-align: left;
 }
 </style>

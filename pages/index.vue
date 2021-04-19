@@ -56,44 +56,44 @@
 <script lang="ts">
 import Vue from 'vue'
 
-import { Pokemons } from '../static/pokemons_interface'
+import { Pokemon, PokemonResult } from '../static/pokemons_interface'
 
 export default Vue.extend({
-  data() {
+  data():{search:string, pokemonList:Pokemon, filteredList:PokemonResult[]} {
     return {
       search: '',
-      pokemonList: {} as Pokemons,
-      filteredList: [] as any
+      pokemonList: <Pokemon>{},
+      filteredList: []
     }
   },
-
+  
   methods: {
-    filterList() {
-      this.filteredList = this.pokemonList.results.filter((pokemon) => {
-        return pokemon.name.toLowerCase().includes(this.search.toLowerCase())
-      })
+    filterList():void {
+      this.filteredList = this.pokemonList.results.filter((pokemon) =>
+        pokemon.name.toLowerCase().includes(this.search.toLowerCase())
+      );
 
       // Prevent filteredList to be full but not displayed
-      if(this.search.length == 0) this.filteredList = []
+      if(this.search.length == 0) this.filteredList = [];
     },
 
-    resetSearch() {
-      this.filteredList = []
-      this.search = ''
+    resetSearch():void {
+      this.filteredList = [];
+      this.search = '';
     },
 
-    pokemonIdFromURL(url:string) {
-      let result = url.split('/')
+    // Needed for filtered list to get the right ID
+    pokemonIdFromURL(url:string):string {
+      let result = url.split('/');
       return result[result.length - 2]
     }
   },
 
   // Pokemon list api call
-  async fetch() {
+  async fetch():Promise<void> {
     this.pokemonList = await fetch(
       'https://pokeapi.co/api/v2/pokemon?limit=151'
     ).then(res => res.json())
-    console.log(this.pokemonList)
   }
 
 })

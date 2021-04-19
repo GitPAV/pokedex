@@ -3,21 +3,15 @@ export const state = () => ({
 })
 
 export const mutations = {
-    add(state:any, item:number) {
-        console.log('pkm list before:', state.list)
-
-        if(state.list.length < 6) {
-            console.log("ne contient pas")
-            state.list.push(item)
-        }
-        console.log('pkm list after:', state.list)
+    add(state:any, item:number):void {
+        if(state.list.length < 6) state.list.push(item);
     },
 
-    remove(state:any, item:number) {
-        console.log('pkm list before:', state.list)
+    remove(state:any, item:number):void {
+        state.list.splice(item, 1);
+    },
 
-        state.list.splice(item, 1)
-
-        console.log('pkm list after:', state.list)
+    changeList(state:any, newlist:Array<number>):void {
+        state.list = newlist;
     }
 }
